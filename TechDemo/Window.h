@@ -10,8 +10,11 @@ public:
 		unsigned width, unsigned height);
 
 	void ProcessMessages();
-	bool UserHasQuit();
+	bool UserHasQuit() const;
+
+	HWND GetHandle() const;
 
 private:
+	HWND m_handle;
 	bool m_userHasQuit;
 };

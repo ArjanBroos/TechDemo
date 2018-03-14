@@ -47,16 +47,16 @@ Window::Window(HINSTANCE instanceHandle, const std::string & name, const std::st
 {
 	RegisterWindowClass(instanceHandle, name);
 
-	HWND windowHandle = CreateWindowEx(NULL, name.c_str(),
+	m_handle = CreateWindowEx(NULL, name.c_str(),
 		title.c_str(), WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT,
 		width, height, NULL, NULL, instanceHandle, NULL);
-	if (!windowHandle)
+	if (!m_handle)
 	{
 		throw std::runtime_error("Could not create window handle.");
 	}
 
-	ShowWindow(windowHandle, SW_SHOW);
-	UpdateWindow(windowHandle);
+	ShowWindow(m_handle, SW_SHOW);
+	UpdateWindow(m_handle);
 }
 
 void Window::ProcessMessages()
@@ -74,7 +74,12 @@ void Window::ProcessMessages()
 	}
 }
 
-bool Window::UserHasQuit()
+HWND Window::GetHandle() const
+{
+	return m_handle;
+}
+
+bool Window::UserHasQuit() const
 {
 	return m_userHasQuit;
 }
