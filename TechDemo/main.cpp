@@ -21,9 +21,9 @@ void DrawScene();
 int WINAPI WinMain(HINSTANCE instanceHandle, HINSTANCE previousInstanceHandle,
 	LPSTR commandLine, int showWindow)
 {
-	const unsigned WindowWidth = 960;
-	const unsigned WindowHeight = 540;
-	Window window(instanceHandle, "ArjanTechDemoWindow", "Arjan's Tech Demo", WindowWidth, WindowHeight);
+	const unsigned WindowWidth = 800;
+	const unsigned WindowHeight = 600;
+	Window window(instanceHandle, L"ArjanTechDemoWindow", L"Arjan's Tech Demo", WindowWidth, WindowHeight);
 
 	InitializeDirect3D(instanceHandle, WindowWidth, WindowHeight, window.GetHandle());
 	InitializeScene();
@@ -70,19 +70,33 @@ void InitializeDirect3D(HINSTANCE instanceHandle, unsigned windowWidth,
 	swapChainDescription.BufferCount = 1;
 	swapChainDescription.OutputWindow = windowHandle;
 	swapChainDescription.Windowed = true;
-	swapChainDescription.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
+	swapChainDescription.SwapEffect = DXGI_SWAP_EFFECT_SEQUENTIAL;
+	swapChainDescription.Flags = 0;
 
 	ThrowIfNotOk(
-		D3D11CreateDeviceAndSwapChain(NULL, D3D_DRIVER_TYPE_HARDWARE, NULL, NULL,
-			NULL, NULL, D3D11_SDK_VERSION, &swapChainDescription, &g_swapChain,
-			&g_device, NULL, &g_context),
+		D3D11CreateDeviceAndSwapChain(nullptr,
+			D3D_DRIVER_TYPE_HARDWARE,
+			NULL,
+			D3D11_CREATE_DEVICE_DEBUG,
+			NULL,
+			NULL,
+			D3D11_SDK_VERSION,
+			&swapChainDescription,
+			&g_swapChain,
+			&g_device,
+			NULL,
+			&g_context),
 		"Failed to create Direct3D11 device and swap chain."
+	);
+
+	ThrowIfNotOk(
+		g_swapChain->ResizeBuffers(1, windowWidth, windowHeight, DXGI_FORMAT_R8G8B8A8_UNORM, NULL),
+		"Could not resize buffers."
 	);
 
 	ID3D11Texture2D* buffer;
 	ThrowIfNotOk(
-		g_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D),
-			reinterpret_cast<void**>(&buffer)),
+		g_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&buffer)),
 		"Failed to retrieve buffer from swap chain."
 	);
 
@@ -92,8 +106,6 @@ void InitializeDirect3D(HINSTANCE instanceHandle, unsigned windowWidth,
 	);
 
 	buffer->Release();
-
-	g_context->OMSetRenderTargets(1, &g_renderTarget, NULL);
 }
 
 void ReleaseObjects()
@@ -117,6 +129,7 @@ void UpdateScene()
 void DrawScene()
 {
 	float color[4] = { red, green, blue, 1.f };
+	g_context->OMSetRenderTargets(1, &g_renderTarget, NULL);
 	g_context->ClearRenderTargetView(g_renderTarget, color);
 	g_swapChain->Present(0, 0);
 }

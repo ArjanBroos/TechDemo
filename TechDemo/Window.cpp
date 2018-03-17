@@ -20,11 +20,11 @@ LRESULT CALLBACK WindowsProcedure(HWND windowHandle, UINT message,
 	return DefWindowProc(windowHandle, message, wordParameter, longParameter);
 }
 
-void RegisterWindowClass(HINSTANCE instanceHandle, const std::string& windowClassName)
+void RegisterWindowClass(HINSTANCE instanceHandle, const std::wstring& windowClassName)
 {
 	WNDCLASSEX windowClass;
 	windowClass.cbSize = sizeof(WNDCLASSEX);
-	windowClass.style = CS_HREDRAW | CS_VREDRAW;
+	windowClass.style = CS_OWNDC;
 	windowClass.lpfnWndProc = WindowsProcedure;
 	windowClass.cbClsExtra = 0;
 	windowClass.cbWndExtra = 0;
@@ -41,15 +41,25 @@ void RegisterWindowClass(HINSTANCE instanceHandle, const std::string& windowClas
 	}
 }
 
-Window::Window(HINSTANCE instanceHandle, const std::string & name, const std::string & title,
+Window::Window(HINSTANCE instanceHandle, const std::wstring & name, const std::wstring & title,
 	unsigned width, unsigned height)
 	: m_userHasQuit(false)
 {
 	RegisterWindowClass(instanceHandle, name);
 
-	m_handle = CreateWindowEx(NULL, name.c_str(),
-		title.c_str(), WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT,
-		width, height, NULL, NULL, instanceHandle, NULL);
+	m_handle = CreateWindowEx(
+		WS_EX_CLIENTEDGE,
+		name.c_str(),
+		title.c_str(),
+		WS_OVERLAPPEDWINDOW,
+		CW_USEDEFAULT,
+		CW_USEDEFAULT,
+		width,
+		height,
+		NULL,
+		NULL,
+		instanceHandle,
+		NULL);
 	if (!m_handle)
 	{
 		throw std::runtime_error("Could not create window handle.");

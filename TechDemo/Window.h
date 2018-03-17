@@ -6,7 +6,7 @@
 class Window
 {
 public:
-	Window(HINSTANCE instanceHandle, const std::string& name, const std::string& title,
+	Window(HINSTANCE instanceHandle, const std::wstring& name, const std::wstring& title,
 		unsigned width, unsigned height);
 
 	void ProcessMessages();
