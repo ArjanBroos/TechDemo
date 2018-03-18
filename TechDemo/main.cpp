@@ -13,13 +13,14 @@ ID3D11RenderTargetView* g_renderTarget;
 ID3D11Buffer* g_triangleVertexBuffer;
 ID3D11VertexShader* g_vertexShader;
 ID3D11PixelShader* g_pixelShader;
-ID3D10Blob* g_vertexBuffer;
-ID3D10Blob* g_pixelBuffer;
+ID3DBlob* g_vertexBuffer;
+ID3DBlob* g_pixelBuffer;
 ID3D11InputLayout* g_vertexLayout;
 
 D3D11_INPUT_ELEMENT_DESC g_layout[] =
 {
-	{"position", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0}
+	{"position", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
+	{"color", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0}
 };
 UINT g_layoutSize = ARRAYSIZE(g_layout);
 
@@ -146,11 +147,11 @@ void ReleaseObjects()
 void InitializeScene()
 {
 	ThrowIfNotOk(
-		D3DCompileFromFile(L"vertexShader.vs", 0, 0, "vertexShader", "vs_5_0", 0, 0, &g_vertexBuffer, 0),
+		D3DCompileFromFile(L"vertexShader.hlsl", 0, 0, "vertexShader", "vs_5_0", 0, 0, &g_vertexBuffer, 0),
 		"Could not compile vertex shader."
 	);
 	ThrowIfNotOk(
-		D3DCompileFromFile(L"pixelShader.ps", 0, 0, "pixelShader", "ps_5_0", 0, 0, &g_pixelBuffer, 0),
+		D3DCompileFromFile(L"pixelShader.hlsl", 0, 0, "pixelShader", "ps_5_0", 0, 0, &g_pixelBuffer, 0),
 		"Could not compile pixel shader"
 	);
 
@@ -168,9 +169,9 @@ void InitializeScene()
 
 	Vertex vertices[] =
 	{
-		Vertex(0.f, 0.5f, 0.5f),
-		Vertex(0.5f, -0.5f, 0.5f),
-		Vertex(-0.5f, -0.5f, 0.5f)
+		Vertex(Position(0.f, 0.5f, 0.5f), Color::Red()),
+		Vertex(Position(0.5f, -0.5f, 0.5f), Color::Green()),
+		Vertex(Position(-0.5f, -0.5f, 0.5f), Color::Blue())
 	};
 
 	D3D11_BUFFER_DESC vertexBufferDescription;

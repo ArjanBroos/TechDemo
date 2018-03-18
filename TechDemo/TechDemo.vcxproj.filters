@@ -34,10 +34,10 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="vertexShader.vs">
+    <None Include="pixelShader.hlsl">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="pixelShader.ps">
+    <None Include="vertexShader.hlsl">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>
