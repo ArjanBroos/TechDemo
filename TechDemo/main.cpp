@@ -5,6 +5,8 @@
 #include "Types.h"
 #include <atlbase.h>
 #include <d3dcompiler.h>
+#include <fstream>
+#include <vector>
 
 IDXGISwapChain* g_swapChain;
 ID3D11Device* g_device;
@@ -30,6 +32,7 @@ void ReleaseObjects();
 void InitializeScene();
 void UpdateScene();
 void DrawScene();
+std::vector<char> ReadByteArray(const std::string& file);
 
 int WINAPI WinMain(HINSTANCE instanceHandle, HINSTANCE previousInstanceHandle,
 	LPSTR commandLine, int showWindow)
@@ -155,12 +158,15 @@ void InitializeScene()
 		"Could not compile pixel shader"
 	);
 
+	auto vertexShaderByteCode = ReadByteArray("vertexShader.cso");
+	auto pixelShaderByteCode = ReadByteArray("pixelShader.cso");
+
 	ThrowIfNotOk(
-		g_device->CreateVertexShader(g_vertexBuffer->GetBufferPointer(), g_vertexBuffer->GetBufferSize(), NULL, &g_vertexShader),
+		g_device->CreateVertexShader(&vertexShaderByteCode[0], vertexShaderByteCode.size(), NULL, &g_vertexShader),
 		"Could not create vertex shader"
 	);
 	ThrowIfNotOk(
-		g_device->CreatePixelShader(g_pixelBuffer->GetBufferPointer(), g_pixelBuffer->GetBufferSize(), NULL, &g_pixelShader),
+		g_device->CreatePixelShader(&pixelShaderByteCode[0], pixelShaderByteCode.size(), NULL, &g_pixelShader),
 		"Could not create pixel shader"
 	);
 
@@ -214,4 +220,21 @@ void DrawScene()
 	g_context->ClearRenderTargetView(g_renderTarget, Color::Black());
 	g_context->Draw(3, 0);
 	g_swapChain->Present(0, 0);
+}
+
+std::vector<char> ReadByteArray(const std::string& filename)
+{
+	std::ifstream file(filename, std::ios::binary | std::ios::ate);
+	if (!file.is_open())
+	{
+		throw std::runtime_error("Could not open " + filename);
+	}
+	size_t pos = file.tellg();
+
+	std::vector<char> result(pos);
+
+	file.seekg(0, std::ios::beg);
+	file.read(&result[0], pos);
+
+	return result;
 }
