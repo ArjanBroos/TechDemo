@@ -1,8 +1,6 @@
 #include "Renderer.h"
 #include "Utility.h"
 
-using Microsoft::WRL::ComPtr;
-
 Renderer::Renderer(unsigned windowWidth, unsigned windowHeight, HWND windowHandle)
 {
 	DXGI_MODE_DESC bufferDescription;
