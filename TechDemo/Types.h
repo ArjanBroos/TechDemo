@@ -19,6 +19,7 @@ struct Color
 		r(other.r), g(other.g), b(other.b), a(other.a) {}
 
 	operator float*() { return reinterpret_cast<float*>(this); }
+	operator const float*() const { return reinterpret_cast<const float*>(this); }
 
 	float r, g, b, a;
 };
