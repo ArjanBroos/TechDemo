@@ -23,6 +23,9 @@ public:
 	ComPtr<ID3D11Buffer> CreateVertexBuffer(const std::vector<Vertex>& vertices);
 	void SetVertexBuffer(ComPtr<ID3D11Buffer> vertexBuffer);
 
+	ComPtr<ID3D11Buffer> CreateIndexBuffer(const std::vector<DWORD>& indices);
+	void SetIndexBuffer(ComPtr<ID3D11Buffer> indexBuffer);
+
 	void SetInputLayout(ComPtr<ID3D11InputLayout> inputLayout);
 
 	void SetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY topology);
@@ -30,7 +33,7 @@ public:
 	void ClearBackBuffer(const Color& color);
 	void ClearRenderTarget(ComPtr<ID3D11RenderTargetView> renderTarget, const Color& color);
 
-	void Draw(unsigned vertexCount);
+	void Draw(unsigned indexCount);
 	void Present();
 
 private:

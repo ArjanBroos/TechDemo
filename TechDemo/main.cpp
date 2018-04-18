@@ -8,7 +8,7 @@
 void ReleaseObjects();
 unsigned InitializeScene(Renderer& renderer);
 void UpdateScene();
-void DrawScene(Renderer& renderer, unsigned vertexCount);
+void DrawScene(Renderer& renderer, unsigned indexCount);
 
 int WINAPI WinMain(HINSTANCE instanceHandle, HINSTANCE previousInstanceHandle,
 	LPSTR commandLine, int showWindow)
@@ -19,13 +19,13 @@ int WINAPI WinMain(HINSTANCE instanceHandle, HINSTANCE previousInstanceHandle,
 
 	Renderer renderer(WindowWidth, WindowHeight, window.GetHandle());
 
-	unsigned vertexCount = InitializeScene(renderer);
+	unsigned indexCount = InitializeScene(renderer);
 
 	while (!window.UserHasQuit())
 	{
 		window.ProcessMessages();
 		UpdateScene();
-		DrawScene(renderer, vertexCount);
+		DrawScene(renderer, indexCount);
 	}
 
 	ReleaseObjects();
@@ -46,9 +46,10 @@ unsigned InitializeScene(Renderer& renderer)
 
 	std::vector<Vertex> vertices =
 	{
-		Vertex(Position(0.f, 0.5f, 0.5f), Color::Red()),
-		Vertex(Position(0.5f, -0.5f, 0.5f), Color::Green()),
-		Vertex(Position(-0.5f, -0.5f, 0.5f), Color::Blue())
+		Vertex(Position(-0.5f, -0.5f, 0.5f), Color::Red()),
+		Vertex(Position(-0.5f, 0.5f, 0.5f), Color::Green()),
+		Vertex(Position(0.5f, 0.5f, 0.5f), Color::Blue()),
+		Vertex(Position(0.5f, -0.5f, 0.5f), Color::Yellow())
 	};
 
 	auto vertexBuffer = renderer.CreateVertexBuffer(vertices);
@@ -56,17 +57,26 @@ unsigned InitializeScene(Renderer& renderer)
 	renderer.SetInputLayout(vertexShader.inputLayout);
 	renderer.SetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	return static_cast<unsigned>(vertices.size());
+	std::vector<DWORD> indices =
+	{
+		0, 1, 2,
+		0, 2, 3
+	};
+
+	auto indexBuffer = renderer.CreateIndexBuffer(indices);
+	renderer.SetIndexBuffer(indexBuffer);
+
+	return static_cast<unsigned>(indices.size());
 }
 
 void UpdateScene()
 {
 }
 
-void DrawScene(Renderer& renderer, unsigned vertexCount)
+void DrawScene(Renderer& renderer, unsigned indexCount)
 {
 	renderer.ClearBackBuffer(Color::Black());
 	renderer.SetRenderTargetToBackBuffer();
-	renderer.Draw(vertexCount);
+	renderer.Draw(indexCount);
 	renderer.Present();
 }

@@ -151,6 +151,33 @@ void Renderer::SetVertexBuffer(ComPtr<ID3D11Buffer> vertexBuffer)
 	m_context->IASetVertexBuffers(0, 1, vertexBuffer.GetAddressOf(), &stride, &offset);
 }
 
+ComPtr<ID3D11Buffer> Renderer::CreateIndexBuffer(const std::vector<DWORD>& indices)
+{
+	D3D11_BUFFER_DESC indexBufferDescription;
+	ZeroMemory(&indexBufferDescription, sizeof(indexBufferDescription));
+	indexBufferDescription.Usage = D3D11_USAGE_DEFAULT;
+	indexBufferDescription.ByteWidth = sizeof(DWORD) * static_cast<unsigned>(indices.size());
+	indexBufferDescription.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	indexBufferDescription.CPUAccessFlags = 0;
+	indexBufferDescription.MiscFlags = 0;
+
+	ComPtr<ID3D11Buffer> indexBuffer;
+	D3D11_SUBRESOURCE_DATA indexBufferData;
+	ZeroMemory(&indexBufferData, sizeof(indexBufferData));
+	indexBufferData.pSysMem = &indices[0];
+	ThrowIfNotOk(
+		m_device->CreateBuffer(&indexBufferDescription, &indexBufferData, &indexBuffer),
+		"Could not create index buffer"
+	);
+
+	return indexBuffer;
+}
+
+void Renderer::SetIndexBuffer(ComPtr<ID3D11Buffer> indexBuffer)
+{
+	m_context->IASetIndexBuffer(indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+}
+
 void Renderer::SetInputLayout(ComPtr<ID3D11InputLayout> inputLayout)
 {
 	m_context->IASetInputLayout(inputLayout.Get());
@@ -171,9 +198,9 @@ void Renderer::ClearRenderTarget(ComPtr<ID3D11RenderTargetView> renderTarget, co
 	m_context->ClearRenderTargetView(renderTarget.Get(), color);
 }
 
-void Renderer::Draw(unsigned vertexCount)
+void Renderer::Draw(unsigned indexCount)
 {
-	m_context->Draw(vertexCount, 0);
+	m_context->DrawIndexed(indexCount, 0, 0);
 }
 
 void Renderer::Present()
