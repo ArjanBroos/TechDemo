@@ -32,6 +32,7 @@ public:
 
 	void ClearBackBuffer(const Color& color);
 	void ClearRenderTarget(ComPtr<ID3D11RenderTargetView> renderTarget, const Color& color);
+	void ClearDepthStencilView();
 
 	void Draw(unsigned indexCount);
 	void Present();
@@ -41,4 +42,5 @@ private:
 	ComPtr<IDXGISwapChain> m_swapChain;
 	ComPtr<ID3D11Device> m_device;
 	ComPtr<ID3D11DeviceContext> m_context;
+	ComPtr<ID3D11DepthStencilView> m_depthStencilView;
 };

@@ -38,7 +38,7 @@ Renderer::Renderer(unsigned windowWidth, unsigned windowHeight, HWND windowHandl
 			&m_device,
 			NULL,
 			&m_context),
-		"Failed to create Direct3D11 device and swap chain."
+		"Could not create Direct3D11 device and swap chain."
 	);
 
 	ThrowIfNotOk(
@@ -49,27 +49,52 @@ Renderer::Renderer(unsigned windowWidth, unsigned windowHeight, HWND windowHandl
 	ComPtr<ID3D11Texture2D> backBuffer;
 	ThrowIfNotOk(
 		m_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), &backBuffer),
-		"Failed to retrieve buffer from swap chain."
+		"Could not retrieve buffer from swap chain."
+	);
+
+	D3D11_TEXTURE2D_DESC depthStencilDescription;
+	depthStencilDescription.Width = windowWidth;
+	depthStencilDescription.Height = windowHeight;
+	depthStencilDescription.MipLevels = 1;
+	depthStencilDescription.ArraySize = 1;
+	depthStencilDescription.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+	depthStencilDescription.SampleDesc.Count = 1;
+	depthStencilDescription.SampleDesc.Quality = 0;
+	depthStencilDescription.Usage = D3D11_USAGE_DEFAULT;
+	depthStencilDescription.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+	depthStencilDescription.CPUAccessFlags = 0;
+	depthStencilDescription.MiscFlags = 0;
+
+	ComPtr<ID3D11Texture2D> depthStencilBuffer;
+	ThrowIfNotOk(
+		m_device->CreateTexture2D(&depthStencilDescription, NULL, depthStencilBuffer.GetAddressOf()),
+		"Could not create depth stencil buffer."
+	);
+
+	ThrowIfNotOk(
+		m_device->CreateDepthStencilView(depthStencilBuffer.Get(), NULL, m_depthStencilView.GetAddressOf()),
+		"Could not create depth stencil view."
 	);
 
 	ThrowIfNotOk(
 		m_device->CreateRenderTargetView(backBuffer.Get(), NULL, &m_backBufferRenderTarget),
-		"Failed to create render target."
+		"Could not create render target."
 	);
 
 	D3D11_VIEWPORT viewport;
-	ZeroMemory(&viewport, sizeof(D3D11_VIEWPORT));
 	viewport.TopLeftX = 0;
 	viewport.TopLeftY = 0;
 	viewport.Width = static_cast<float>(windowWidth);
 	viewport.Height = static_cast<float>(windowHeight);
+	viewport.MinDepth = 0.f;
+	viewport.MaxDepth = 1.f;
 
 	m_context->RSSetViewports(1, &viewport);
 }
 
 void Renderer::SetRenderTarget(ComPtr<ID3D11RenderTargetView> renderTarget)
 {
-	m_context->OMSetRenderTargets(1, renderTarget.GetAddressOf(), NULL);
+	m_context->OMSetRenderTargets(1, renderTarget.GetAddressOf(), m_depthStencilView.Get());
 }
 
 void Renderer::SetRenderTargetToBackBuffer()
@@ -196,6 +221,11 @@ void Renderer::ClearBackBuffer(const Color& color)
 void Renderer::ClearRenderTarget(ComPtr<ID3D11RenderTargetView> renderTarget, const Color& color)
 {
 	m_context->ClearRenderTargetView(renderTarget.Get(), color);
+}
+
+void Renderer::ClearDepthStencilView()
+{
+	m_context->ClearDepthStencilView(m_depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
 }
 
 void Renderer::Draw(unsigned indexCount)

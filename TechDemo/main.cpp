@@ -76,6 +76,7 @@ void UpdateScene()
 void DrawScene(Renderer& renderer, unsigned indexCount)
 {
 	renderer.ClearBackBuffer(Color::Black());
+	renderer.ClearDepthStencilView();
 	renderer.SetRenderTargetToBackBuffer();
 	renderer.Draw(indexCount);
 	renderer.Present();
