@@ -4,7 +4,7 @@
 #include <d3d11.h>
 #include <string>
 #include "Types.h"
-#include "VertexShader.h"
+#include "Shaders.h"
 #include <vector>
 
 class Renderer
@@ -12,11 +12,11 @@ class Renderer
 public:
 	Renderer(unsigned windowWidth, unsigned windowHeight, HWND windowHandle);
 
+	ComPtr<ID3D11Device> GetDevice();
+
 	void SetRenderTarget(ComPtr<ID3D11RenderTargetView> renderTarget);
 	void SetRenderTargetToBackBuffer();
 
-	VertexShader CreateVertexShaderFromPrecompiledFile(const std::string& filename);
-	ComPtr<ID3D11PixelShader> CreatePixelShaderFromPrecompiledFile(const std::string& filename);
 	void SetVertexShader(ComPtr<ID3D11VertexShader> vertexShader);
 	void SetPixelShader(ComPtr<ID3D11PixelShader> pixelShader);
 

@@ -4,9 +4,11 @@
 #include "Types.h"
 #include <vector>
 #include "Renderer.h"
+#include "ShaderCompiler.h"
+#include "Mesh.h"
 
 void ReleaseObjects();
-unsigned InitializeScene(Renderer& renderer);
+Mesh InitializeScene(Renderer& renderer);
 void UpdateScene();
 void DrawScene(Renderer& renderer, unsigned indexCount);
 
@@ -19,13 +21,13 @@ int WINAPI WinMain(HINSTANCE instanceHandle, HINSTANCE previousInstanceHandle,
 
 	Renderer renderer(WindowWidth, WindowHeight, window.GetHandle());
 
-	unsigned indexCount = InitializeScene(renderer);
+	Mesh mesh = InitializeScene(renderer);
 
 	while (!window.UserHasQuit())
 	{
 		window.ProcessMessages();
 		UpdateScene();
-		DrawScene(renderer, indexCount);
+		DrawScene(renderer, mesh.GetNumberOfIndices());
 	}
 
 	ReleaseObjects();
@@ -37,11 +39,14 @@ void ReleaseObjects()
 {
 }
 
-unsigned InitializeScene(Renderer& renderer)
+Mesh InitializeScene(Renderer& renderer)
 {
-	auto vertexShader = renderer.CreateVertexShaderFromPrecompiledFile("vertexShader.cso");
-	auto pixelShader = renderer.CreatePixelShaderFromPrecompiledFile("pixelShader.cso");
+	ShaderCompiler shaderCompiler(renderer.GetDevice());
+	auto vertexShader = shaderCompiler.CreateVertexShaderFromPrecompiledFile("vertexShader.cso");
+	auto pixelShader = shaderCompiler.CreatePixelShaderFromPrecompiledFile("pixelShader.cso");
+
 	renderer.SetVertexShader(vertexShader.shader);
+	renderer.SetInputLayout(vertexShader.inputLayout);
 	renderer.SetPixelShader(pixelShader);
 
 	std::vector<Vertex> vertices =
@@ -52,21 +57,16 @@ unsigned InitializeScene(Renderer& renderer)
 		Vertex(Position(0.5f, -0.5f, 0.5f), Color::Yellow())
 	};
 
-	auto vertexBuffer = renderer.CreateVertexBuffer(vertices);
-	renderer.SetVertexBuffer(vertexBuffer);
-	renderer.SetInputLayout(vertexShader.inputLayout);
-	renderer.SetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
 	std::vector<DWORD> indices =
 	{
 		0, 1, 2,
 		0, 2, 3
 	};
 
-	auto indexBuffer = renderer.CreateIndexBuffer(indices);
-	renderer.SetIndexBuffer(indexBuffer);
+	Mesh mesh(renderer, vertices, indices);
+	mesh.SetBuffers();
 
-	return static_cast<unsigned>(indices.size());
+	return mesh;
 }
 
 void UpdateScene()
