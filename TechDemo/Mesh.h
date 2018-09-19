@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include "Types.h"
+#include "Vertex.h"
 #include <d3d11.h>
 #include "ComPtr.h"
 #include "Renderer.h"

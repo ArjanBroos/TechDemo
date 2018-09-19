@@ -132,7 +132,9 @@
     <ClCompile Include="Types.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="sdk\include\Types.h" />
+    <ClInclude Include="sdk\include\Color.h" />
+    <ClInclude Include="sdk\include\Position.h" />
+    <ClInclude Include="sdk\include\Vertex.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

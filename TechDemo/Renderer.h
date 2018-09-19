@@ -3,7 +3,8 @@
 #include "ComPtr.h"
 #include <d3d11.h>
 #include <string>
-#include "Types.h"
+#include "Color.h"
+#include "Vertex.h"
 #include "Shaders.h"
 #include <vector>
 

@@ -1,7 +1,9 @@
 #include <Windows.h>
 #include "Window.h"
 #include <d3d11.h>
-#include "Types.h"
+#include "Color.h"
+#include "Position.h"
+#include "Vertex.h"
 #include <vector>
 #include "Renderer.h"
 #include "ShaderCompiler.h"

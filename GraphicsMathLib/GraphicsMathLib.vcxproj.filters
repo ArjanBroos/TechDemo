@@ -20,7 +20,13 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="sdk\include\Types.h">
+    <ClInclude Include="sdk\include\Color.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\include\Position.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\include\Vertex.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

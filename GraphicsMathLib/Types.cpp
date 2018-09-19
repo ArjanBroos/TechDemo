@@ -1,4 +1,6 @@
-#include "Types.h"
+#include "Color.h"
+#include "Position.h"
+#include "Vertex.h"
 
 Color::Color() :
 	r(0.f), g(0.f), b(0.f), a(1.f) {}
