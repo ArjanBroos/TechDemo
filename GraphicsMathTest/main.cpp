@@ -53,3 +53,15 @@ TEST_CASE("The dot product of (1, 2, 3) and (2, 3, 4) is 20")
 	const auto dotProduct = Dot(Vector(1.f, 2.f, 3.f), Vector(2.f, 3.f, 4.f));
 	REQUIRE(dotProduct == Approx(20.f));
 }
+
+TEST_CASE("The cross product of (1, 0, 0) and (0, 1, 0) is (0, 0, 1)")
+{
+	const auto crossProduct = Cross(Vector(1.f, 0.f, 0.f), Vector(0.f, 1.f, 0.f));
+	REQUIRE(crossProduct == Vector(0.f, 0.f, 1.f));
+}
+
+TEST_CASE("The cross product of (0, 1, 0) and (1, 0, 0) is (0, 0, -1)")
+{
+	const auto crossProduct = Cross(Vector(0.f, 1.f, 0.f), Vector(1.f, 0.f, 0.f));
+	REQUIRE(crossProduct == Vector(0.f, 0.f, -1.f));
+}

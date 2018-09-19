@@ -17,7 +17,21 @@ Vector::operator float*()
 	return reinterpret_cast<float*>(this);
 }
 
+bool Vector::operator==(const Vector & rhs) const
+{
+	return x == rhs.x && y == rhs.y && z == rhs.z;
+}
+
 float Dot(const Vector & lhs, const Vector & rhs)
 {
 	return lhs.x * rhs.x + lhs.y * rhs.y + lhs.z * rhs.z;
+}
+
+Vector Cross(const Vector & lhs, const Vector & rhs)
+{
+	return Vector(
+		lhs.y*rhs.z - lhs.z*rhs.y,
+		lhs.z*rhs.x - lhs.x*rhs.z,
+		lhs.x*rhs.y - lhs.y*rhs.x
+	);
 }

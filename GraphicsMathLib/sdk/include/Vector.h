@@ -13,6 +13,8 @@ struct Vector
 	Vector(const Position& position, float w);
 
 	operator float*();
+	bool operator==(const Vector& rhs) const;
 };
 
 float Dot(const Vector& lhs, const Vector& rhs);
+Vector Cross(const Vector& lhs, const Vector& rhs);
