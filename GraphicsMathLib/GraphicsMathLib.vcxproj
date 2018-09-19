@@ -130,12 +130,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Color.cpp" />
+    <ClCompile Include="Matrix.cpp" />
     <ClCompile Include="Position.cpp" />
     <ClCompile Include="Vector.cpp" />
     <ClCompile Include="Vertex.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="sdk\include\Color.h" />
+    <ClInclude Include="sdk\include\Matrix.h" />
     <ClInclude Include="sdk\include\Position.h" />
     <ClInclude Include="sdk\include\Vector.h" />
     <ClInclude Include="sdk\include\Vertex.h" />

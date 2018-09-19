@@ -5,6 +5,7 @@
 #include "Position.h"
 #include "Vertex.h"
 #include "Vector.h"
+#include "Matrix.h"
 
 TEST_CASE("A Color can be converted to an array of floats")
 {
@@ -64,4 +65,29 @@ TEST_CASE("The cross product of (0, 1, 0) and (1, 0, 0) is (0, 0, -1)")
 {
 	const auto crossProduct = Cross(Vector(0.f, 1.f, 0.f), Vector(1.f, 0.f, 0.f));
 	REQUIRE(crossProduct == Vector(0.f, 0.f, -1.f));
+}
+
+TEST_CASE("A Matrix can be converted to an array of floats")
+{
+	const Matrix matrix{
+		1.f, 0.f, 0.f, 0.f,
+		0.f, 1.f, 0.f, 0.f,
+		0.f, 0.f, 1.f, 0.f, 
+		0.f, 0.f, 0.f, 1.f };
+	CHECK(matrix.elements[0] == 1.f);
+	CHECK(matrix.elements[1] == 0.f);
+	CHECK(matrix.elements[2] == 0.f);
+	CHECK(matrix.elements[3] == 0.f);
+	CHECK(matrix.elements[4] == 0.f);
+	CHECK(matrix.elements[5] == 1.f);
+	CHECK(matrix.elements[6] == 0.f);
+	CHECK(matrix.elements[7] == 0.f);
+	CHECK(matrix.elements[8] == 0.f);
+	CHECK(matrix.elements[9] == 0.f);
+	CHECK(matrix.elements[10] == 1.f);
+	CHECK(matrix.elements[11] == 0.f);
+	CHECK(matrix.elements[12] == 0.f);
+	CHECK(matrix.elements[13] == 0.f);
+	CHECK(matrix.elements[14] == 0.f);
+	CHECK(matrix.elements[15] == 1.f);
 }
