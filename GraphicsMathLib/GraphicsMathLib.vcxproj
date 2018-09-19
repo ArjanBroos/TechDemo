@@ -129,7 +129,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Types.cpp" />
+    <ClCompile Include="Color.cpp" />
+    <ClCompile Include="Position.cpp" />
+    <ClCompile Include="Vertex.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="sdk\include\Color.h" />
