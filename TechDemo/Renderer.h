@@ -1,12 +1,22 @@
 #pragma once
 
 #include "ComPtr.h"
-#include <d3d11.h>
 #include <string>
-#include "Color.h"
-#include "Vertex.h"
-#include "Shaders.h"
 #include <vector>
+
+struct ID3D11Device;
+struct ID3D11DeviceContext;
+struct ID3D11RenderTargetView;
+struct ID3D11VertexShader;
+struct ID3D11PixelShader;
+struct ID3D11Buffer;
+struct ID3D11InputLayout;
+struct ID3D11RenderTargetView;
+struct IDXGISwapChain;
+struct ID3D11DepthStencilView;
+enum D3D_PRIMITIVE_TOPOLOGY;
+struct Vertex;
+struct Color;
 
 class Renderer
 {

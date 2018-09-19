@@ -2,8 +2,10 @@
 
 #include "Shaders.h"
 #include "ComPtr.h"
-#include <d3d11.h>
 #include <string>
+
+struct ID3D11Device;
+struct ID3D11PixelShader;
 
 class ShaderCompiler
 {

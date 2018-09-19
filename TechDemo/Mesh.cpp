@@ -1,4 +1,7 @@
 #include "Mesh.h"
+#include "Renderer.h"
+#include "Vertex.h"
+#include <d3d11.h>
 
 Mesh::Mesh(Renderer& renderer, const std::vector<Vertex>& vertices, const std::vector<DWORD>& indices) :
 	m_numberOfIndices(static_cast<unsigned long>(indices.size())),

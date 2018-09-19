@@ -1,7 +1,10 @@
 #pragma once
 
 #include "ComPtr.h"
-#include <d3d11.h>
+
+struct ID3D11VertexShader;
+struct ID3D11PixelShader;
+struct ID3D11InputLayout;
 
 struct VertexShader
 {

@@ -1,5 +1,8 @@
 #include "Renderer.h"
+#include <d3d11.h>
 #include "Utility.h"
+#include "Color.h"
+#include "Vertex.h"
 
 Renderer::Renderer(unsigned windowWidth, unsigned windowHeight, HWND windowHandle)
 {

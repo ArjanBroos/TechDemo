@@ -1,5 +1,6 @@
 #include "ShaderCompiler.h"
 #include "Utility.h"
+#include <d3d11.h>
 
 ShaderCompiler::ShaderCompiler(ComPtr<ID3D11Device> device) :
 	m_device(device)

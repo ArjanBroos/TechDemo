@@ -164,7 +164,6 @@
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\shared\include\Types.h" />
     <ClInclude Include="ComPtr.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Renderer.h" />

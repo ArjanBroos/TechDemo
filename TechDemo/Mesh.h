@@ -1,10 +1,11 @@
 #pragma once
 
 #include <vector>
-#include "Vertex.h"
-#include <d3d11.h>
 #include "ComPtr.h"
-#include "Renderer.h"
+
+class Renderer;
+struct Vertex;
+struct ID3D11Buffer;
 
 class Mesh
 {
