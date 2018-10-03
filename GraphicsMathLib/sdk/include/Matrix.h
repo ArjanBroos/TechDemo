@@ -19,4 +19,5 @@ struct Matrix
 
 	static Matrix Identity();
 	static Matrix Translation(float x, float y, float z);
+	static Matrix Scaling(float x, float y, float z);
 };

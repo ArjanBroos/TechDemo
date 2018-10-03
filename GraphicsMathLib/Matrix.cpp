@@ -66,3 +66,12 @@ Matrix Matrix::Translation(float x, float y, float z)
 		0.f, 0.f, 1.f, z,
 		0.f, 0.f, 0.f, 1.f });
 }
+
+Matrix Matrix::Scaling(float x, float y, float z)
+{
+	return Matrix({
+		x, 0.f, 0.f, 0.f,
+		0.f, y, 0.f, 0.f, 
+		0.f, 0.f, z, 0.f,
+		0.f, 0.f, 0.f, 1.f });
+}

@@ -151,3 +151,21 @@ TEST_CASE("A Point multiplied by a translation matrix results in a translated po
 	const Vector expectedPoint(1.f, 3.f, 5.f, 1.f);
 	CHECK(multipliedPoint == expectedPoint);
 }
+
+TEST_CASE("A Vector multiplied by a scaling matrix results in a scaled vector")
+{
+	const Matrix scaling = Matrix::Scaling(1.f, 2.f, 3.f);
+	const Vector vector(1.f, 2.f, 4.f);
+	const Vector scaledVector = scaling * vector;
+	const Vector expectedVector(1.f, 4.f, 12.f);
+	CHECK(scaledVector == expectedVector);
+}
+
+TEST_CASE("A Vector multiplied by a rotation matrix results in a rotated vector")
+{
+	const Matrix rotation = Matrix::Rotation(1.f, 2.f, 3.f);
+	const Vector vector(1.f, 2.f, 4.f);
+	const Vector rotatedVector = rotation * vector;
+	const Vector expectedVector(1.f, 4.f, 12.f);
+	CHECK(rotatedVector == expectedVector);
+}
