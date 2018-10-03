@@ -6,6 +6,28 @@
 #include "Vertex.h"
 #include "Vector.h"
 #include "Matrix.h"
+#include <sstream>
+
+class StringBuilder
+{
+public:
+	template<typename T>
+	StringBuilder& operator<<(const T& element) { m_stringstream << element; return *this; }
+	operator std::string() { return m_stringstream.str(); }
+private:
+	std::stringstream m_stringstream;
+};
+
+namespace Catch {
+	template<>
+	struct StringMaker<::Vector> {
+		static std::string convert(::Vector const& vector)
+		{
+			return StringBuilder() << "(" << vector.x << ", " << vector.y
+				<< ", " << vector.z << ", " << vector.w << ")";
+		}
+	};
+}
 
 TEST_CASE("A Color can be converted to an array of floats")
 {
@@ -49,6 +71,13 @@ TEST_CASE("A Vector can be converted to an array of floats")
 	CHECK(vectorComponents[3] == 1.f);
 }
 
+TEST_CASE("A vector can be assigned via the subscript operator")
+{
+	Vector vector(0.f, 0.f, 0.f, 0.f);
+	vector[1] = 2.f;
+	CHECK(vector[1] == 2.f);
+}
+
 TEST_CASE("The dot product of (1, 2, 3) and (2, 3, 4) is 20")
 {
 	const auto dotProduct = Dot(Vector(1.f, 2.f, 3.f), Vector(2.f, 3.f, 4.f));
@@ -69,11 +98,11 @@ TEST_CASE("The cross product of (0, 1, 0) and (1, 0, 0) is (0, 0, -1)")
 
 TEST_CASE("A Matrix can be converted to an array of floats")
 {
-	const Matrix matrix{
+	const Matrix matrix({
 		1.f, 0.f, 0.f, 0.f,
 		0.f, 1.f, 0.f, 0.f,
 		0.f, 0.f, 1.f, 0.f, 
-		0.f, 0.f, 0.f, 1.f };
+		0.f, 0.f, 0.f, 1.f });
 	CHECK(matrix.elements[0] == 1.f);
 	CHECK(matrix.elements[1] == 0.f);
 	CHECK(matrix.elements[2] == 0.f);
@@ -90,4 +119,35 @@ TEST_CASE("A Matrix can be converted to an array of floats")
 	CHECK(matrix.elements[13] == 0.f);
 	CHECK(matrix.elements[14] == 0.f);
 	CHECK(matrix.elements[15] == 1.f);
+}
+
+TEST_CASE("The second row of an identity matrix is (0, 1, 0, 0)")
+{
+	Matrix matrix = Matrix::Identity();
+	CHECK(matrix.Row(1) == Vector(0.f, 1.f, 0.f, 0.f));
+}
+
+TEST_CASE("A Vector multiplied by an identity Matrix results in the same vector")
+{
+	const Matrix identity = Matrix::Identity();
+	const Vector vector(1.f, 2.f, 3.f);
+	const auto multipliedVector = identity * vector;
+	CHECK(vector == multipliedVector);
+}
+
+TEST_CASE("A Vector multiplied by a translation matrix results in the same vector")
+{
+	const Matrix translation = Matrix::Translation(1.f, 2.f, 3.f);
+	const Vector vector(0.f, 1.f, 2.f, 0.f);
+	const auto multipliedVector = translation * vector;
+	CHECK(vector == multipliedVector);
+}
+
+TEST_CASE("A Point multiplied by a translation matrix results in a translated point")
+{
+	const Matrix translation = Matrix::Translation(1.f, 2.f, 3.f);
+	const Vector point(0.f, 1.f, 2.f, 1.f);
+	const auto multipliedPoint = translation * point;
+	const Vector expectedPoint(1.f, 3.f, 5.f, 1.f);
+	CHECK(multipliedPoint == expectedPoint);
 }

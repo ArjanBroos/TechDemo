@@ -14,6 +14,7 @@ struct Vector
 
 	operator float*();
 	bool operator==(const Vector& rhs) const;
+	float& operator[](unsigned index);
 };
 
 float Dot(const Vector& lhs, const Vector& rhs);
