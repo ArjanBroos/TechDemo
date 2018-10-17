@@ -9,6 +9,8 @@
 #include <sstream>
 #include "Constants.h"
 
+#include <DirectXMath.h>
+
 class StringBuilder
 {
 public:
