@@ -137,6 +137,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="sdk\include\Color.h" />
+    <ClInclude Include="sdk\include\Constants.h" />
     <ClInclude Include="sdk\include\Matrix.h" />
     <ClInclude Include="sdk\include\Position.h" />
     <ClInclude Include="sdk\include\Vector.h" />

@@ -70,8 +70,38 @@ Matrix Matrix::Translation(float x, float y, float z)
 Matrix Matrix::Scaling(float x, float y, float z)
 {
 	return Matrix({
-		x, 0.f, 0.f, 0.f,
-		0.f, y, 0.f, 0.f, 
-		0.f, 0.f, z, 0.f,
+		x,  0.f,  0.f, 0.f,
+		0.f, y,   0.f, 0.f, 
+		0.f, 0.f, z,   0.f,
 		0.f, 0.f, 0.f, 1.f });
+}
+
+Matrix Matrix::RotationX(float radians)
+{
+	return Matrix({
+			1.f, 0.f, 0.f, 0.f,
+			0.f, cos(radians), -sin(radians), 0.f,
+			0.f, sin(radians), cos(radians), 0.f,
+			0.f, 0.f, 0.f, 1.f
+		});
+}
+
+Matrix Matrix::RotationY(float radians)
+{
+	return Matrix({
+		cos(radians), 0.f, sin(radians), 0.f,
+		0.f, 1.f, 0.f, 0.f,
+		-sin(radians), 0.f, cos(radians), 0.f,
+		0.f, 0.f, 0.f, 1.f
+		});
+}
+
+Matrix Matrix::RotationZ(float radians)
+{
+	return Matrix({
+		cos(radians), -sin(radians), 0.f, 0.f,
+		sin(radians), cos(radians), 0.f, 0.f,
+		0.f, 0.f, 1.f, 0.f,
+		0.f, 0.f, 0.f, 1.f
+		});
 }

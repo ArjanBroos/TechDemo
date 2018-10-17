@@ -7,6 +7,7 @@
 #include "Vector.h"
 #include "Matrix.h"
 #include <sstream>
+#include "Constants.h"
 
 class StringBuilder
 {
@@ -161,11 +162,35 @@ TEST_CASE("A Vector multiplied by a scaling matrix results in a scaled vector")
 	CHECK(scaledVector == expectedVector);
 }
 
-TEST_CASE("A Vector multiplied by a rotation matrix results in a rotated vector")
+TEST_CASE("(1, 1, 0) rotated pi/2 around the x-axis is (1, 0, 1)")
 {
-	const Matrix rotation = Matrix::Rotation(1.f, 2.f, 3.f);
-	const Vector vector(1.f, 2.f, 4.f);
+	const Matrix rotation = Matrix::RotationX(PI / 2.f);
+	const Vector vector(1.f, 1.f, 0.f);
 	const Vector rotatedVector = rotation * vector;
-	const Vector expectedVector(1.f, 4.f, 12.f);
-	CHECK(rotatedVector == expectedVector);
+	const Vector expectedVector(1.f, 0.f, 1.f);
+	CHECK(rotatedVector.x == Approx(expectedVector.x).margin(1e-6f));
+	CHECK(rotatedVector.y == Approx(expectedVector.y).margin(1e-6f));
+	CHECK(rotatedVector.z == Approx(expectedVector.z).margin(1e-6f));
+}
+
+TEST_CASE("(1, 1, 0) rotated pi/2 around the y-axis is (0, 1, -1)")
+{
+	const Matrix rotation = Matrix::RotationY(PI / 2.f);
+	const Vector vector(1.f, 1.f, 0.f);
+	const Vector rotatedVector = rotation * vector;
+	const Vector expectedVector(0.f, 1.f, -1.f);
+	CHECK(rotatedVector.x == Approx(expectedVector.x).margin(1e-6f));
+	CHECK(rotatedVector.y == Approx(expectedVector.y).margin(1e-6f));
+	CHECK(rotatedVector.z == Approx(expectedVector.z).margin(1e-6f));
+}
+
+TEST_CASE("(0, 1, 1) rotated pi/2 around the z-axis is (-1, 0, 1)")
+{
+	const Matrix rotation = Matrix::RotationZ(PI / 2.f);
+	const Vector vector(0.f, 1.f, 1.f);
+	const Vector rotatedVector = rotation * vector;
+	const Vector expectedVector(-1.f, 0.f, 1.f);
+	CHECK(rotatedVector.x == Approx(expectedVector.x).margin(1e-6f));
+	CHECK(rotatedVector.y == Approx(expectedVector.y).margin(1e-6f));
+	CHECK(rotatedVector.z == Approx(expectedVector.z).margin(1e-6f));
 }
